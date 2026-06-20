@@ -1,0 +1,11 @@
+# Dataset: Cross-Modal Text Streams (Modality-Agnostic Lifelong Learning)
+dataset:
+  name: "text_streams"
+  sequence: ["ag_news", "amazon_reviews", "yelp"]
+  num_tasks: 3
+  
+  # Neuromorphic Text Encoding
+  vocab_size: 50000
+  embed_dim: 128              # d_in for text encoder
+  max_seq_len: 512
+  batch_size: 64

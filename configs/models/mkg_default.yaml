@@ -1,0 +1,43 @@
+# Meta-Knowledge Graph (MKG) Default Architecture & Hyperparameters
+model:
+  name: "mkg"
+  
+  # Dimensionality
+  in_features: 512            # d_in (from SpikingCNN or Text Encoder)
+  out_features: 100           # d_out (task-specific output dimension)
+  
+  # 1. Spiking Low-Rank Dynamics (SpaLRD)
+  # Eq: W_m = Phi C_m, where Phi^T Phi = I_r
+  rank: 32                    # r (Optimal rank from Table 6 ablation)
+  freeze_basis: true          # Delta Phi = 0
+  
+  # 2. LIF Neuron & Synaptic Dynamics
+  tau_s: 5.0                  # Synaptic time constant (alpha-function)
+  tau_m: 20.0                 # Membrane time constant
+  v_th: 1.0                   # Firing threshold
+  r_m: 1.0                    # Membrane resistance
+  
+  # 3. Topological Subgraph Routing
+  # Eq: min d_W(PD_m, PD_k) > tau => instantiate v_m
+  topo_threshold: 0.4         # tau (Optimal threshold from Table 7 ablation)
+  homology_dimensions: [0, 1] # Betti numbers beta_0, beta_1
+  routing_window: 50          # Time window to accumulate point cloud P_m
+  
+  # 4. Meta-Plastic STDP (Edge Plasticity)
+  # Eq: phi_ij = {A_+, tau_+, A_-, tau_-}
+  A_plus: 0.01
+  tau_plus: 20.0
+  A_minus: 0.012
+  tau_minus: 20.0
+  learnable_stdp_params: true # Enables outer-loop meta-gradient
+  
+  # 5. Active Forgetting & Memory Lifecycle
+  # Eq: ||M||_0 <= rho_max |E|
+  rho_max: 0.2                # Maximum allowable edge density (20%)
+  epsilon_q: 1e-4             # Hard quantization threshold H_{epsilon_q}
+  lambda_decay: 0.95          # Eligibility trace decay factor
+  
+  # Optimization
+  eta_meta: 0.001             # Outer-loop meta-learning rate
+  eta_hebbian: 0.01           # Inner-loop Hebbian learning rate (eta_0)
+  gamma_decay: 0.95           # Hebbian LR decay (eta_h(k) = eta_0 * gamma^k)

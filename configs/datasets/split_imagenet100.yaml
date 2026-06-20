@@ -1,0 +1,18 @@
+# Dataset: Split-ImageNet-100 + ImageNet-O (OWCIL & OOD Protocol)
+dataset:
+  name: "split_imagenet100"
+  root_dir: "./data/imagenet"
+  num_tasks: 20               # N = 20 sequential tasks
+  classes_per_task: 5         # 100 classes / 20 tasks
+  disjoint_labels: true       # Y_k ∩ Y_j = ∅
+  
+  # Out-of-Distribution Stream
+  ood_dataset: "imagenet_o"
+  ood_root_dir: "./data/imagenet_o"
+  
+  # Preprocessing & Encoding
+  image_size: 224
+  num_workers: 4
+  batch_size: 64
+  time_steps: 10              # T = 10 simulation steps for LIF dynamics
+  poisson_rate_max: 1.0       # Max firing rate for Poisson encoding

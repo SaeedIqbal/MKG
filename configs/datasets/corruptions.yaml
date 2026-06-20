@@ -1,0 +1,16 @@
+# Dataset: CIFAR-10-C & ImageNet-C (Topological Robustness)
+dataset:
+  name: "cifar10_c"
+  root_dir: "./data/cifar10_c"
+  clean_dataset: "split_cifar10"
+  
+  # Corruption Protocol
+  corruption_types: 15        # Gaussian noise, snow, fog, motion blur, pixelation, etc.
+  severities: [1, 2, 3, 4, 5] # Severity levels
+  
+  # Evaluation focuses on Severity 5
+  eval_severity: 5            
+  
+  image_size: 32
+  batch_size: 256
+  time_steps: 10

@@ -1,0 +1,12 @@
+# Dataset: Mini-DomainNet (Domain-Incremental Generalization)
+dataset:
+  name: "mini_domainnet"
+  root_dir: "./data/domainnet"
+  domains: ["real", "sketch", "painting", "clipart"] # Task sequence: Real -> Sketch -> Painting -> Clipart
+  num_tasks: 4
+  classes_per_task: 50
+  disjoint_labels: false      # Domain-Incremental: Same label space, different distributions
+  
+  image_size: 64
+  batch_size: 128
+  time_steps: 10
